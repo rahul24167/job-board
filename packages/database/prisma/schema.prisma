@@ -16,4 +16,33 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+
+  applications  Application[]
+}
+
+
+model Job {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  location    String
+  company     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applications Application[]
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  jobId     String
+  userId    String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  job Job @relation(fields: [jobId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([jobId, userId])
 }
