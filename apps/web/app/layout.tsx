@@ -1,3 +1,4 @@
+import "@repo/types";
 export default function RootLayout({
   children,
 }: {

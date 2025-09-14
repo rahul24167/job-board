@@ -1,12 +1,15 @@
-import { prisma } from "@repo/database";
-
+import { auth } from "../auth";
+import SignIn from "../components/sign-in";
 export default async function IndexPage() {
-  const users = await prisma.user.findMany();
+  const session = await auth();
+ 
 
   return (
     <div>
       <h1>Hello World</h1>
-      <pre>{JSON.stringify(users, null, 2)}</pre>
+      {session?.user ? <p>Welcome, {session.user.name}</p> : null}
+      <SignIn />
+      {/* <pre>{JSON.stringify(users, null, 2)}</pre> */}
     </div>
   );
 }
