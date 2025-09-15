@@ -1,6 +1,9 @@
 {
   "name": "@repo/types",
   "version": "1.0.0",
-  "types": "src/index.d.ts"
-
+  "main": "src/index.d.ts",
+  "types": "src/index.d.ts",
+  "files": [
+    "src"
+  ]
 }

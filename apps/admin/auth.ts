@@ -2,12 +2,13 @@ import NextAuth, { type NextAuthResult, } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@repo/database";
 import Google from "next-auth/providers/google";
+import "@repo/types";
 
-const decideUserRole = (email: string | undefined) => {
+const decideUserRole = async (email: string | undefined) => {
   email = email?.toLowerCase();
   if (!email) return "user";
   if (email === process.env.OWNER_EMAIL) return "owner";
-  const role = prisma.user
+  const role = await prisma.user
     .findFirst({
       where: { email },
       select: { role: true },
@@ -20,18 +21,22 @@ export const result = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({
-      profile(profile) {
+      async profile(profile) {
         return {
-          role: decideUserRole(profile.email),
-          ...profile,
+          role: await decideUserRole(profile.email),
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture || null
         };
       },
     }),
   ],
+  
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     session({ session, user }) {
-      session.user.role = user.role;
+      session.user.role = user.role || "user";
       return session;
     },
   },
