@@ -9,7 +9,6 @@ export default async function IndexPage() {
       <h1>Hello World</h1>
       {session?.user ? <p>Welcome, {session.user.name}</p> : null}
       <SignIn />
-      {/* <pre>{JSON.stringify(users, null, 2)}</pre> */}
     </div>
   );
 }

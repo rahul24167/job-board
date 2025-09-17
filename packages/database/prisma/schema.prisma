@@ -13,9 +13,12 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          String?  // New column
+  role          String? 
   accounts      Account[]
   sessions      Session[]
+  createdOrganizations Organization[]
+  MemberOrganizations MemberOrganization[]
+  ModeratorOrganizations ModeratorOrganization[]
   Authenticator Authenticator[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -33,7 +36,6 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
  
@@ -47,7 +49,6 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -75,3 +76,57 @@ model Authenticator {
  
   @@id([userId, credentialID])
 }
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  description String
+  memberEmailDomain String
+  ModeratorEmailDomain String
+  createdBy String
+  creator User @relation(fields: [createdBy], references: [id])
+  Members   MemberOrganization[]
+  Moderators ModeratorOrganization[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MemberOrganization {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id])
+  role String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model ModeratorOrganization {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id])
+  jobs Job[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Job{
+  id String @id @default(cuid())
+  title String
+  description String
+  company String
+  location String
+  salaryLowerLimit String
+  salaryUpperLimit String
+  employmentType String
+  experienceLevel String
+  postedBy String
+  moderator ModeratorOrganization @relation(fields: [postedBy], references: [id])
+  applyBefore DateTime
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
