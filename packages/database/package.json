@@ -4,6 +4,7 @@
   "exports": {
     ".": "./src/client.ts"
   },
+  "private": true,
   "scripts": {
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
@@ -18,16 +19,16 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "latest"
+    "@prisma/client": "^6.17.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "eslint": "^8.57.0",
-    "prisma": "latest",
-    "rimraf": "^5.0.5",
+    "eslint": "^9.7.0",
+    "prisma": "^6.17.0",
+    "rimraf": "^6.0.1",
     "tsup": "^8.0.2",
     "tsx": "^4.20.5",
-    "typescript": "5.5.4"
+    "typescript": "^6.0.0"
   }
 }

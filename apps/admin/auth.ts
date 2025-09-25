@@ -1,8 +1,9 @@
+import authConfig from "./auth.config"
 import NextAuth, { type NextAuthResult, } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@repo/database";
 import Google from "next-auth/providers/google";
-import "@repo/types";
+
 
 const decideUserRole = async (email: string | undefined) => {
   email = email?.toLowerCase();
@@ -17,8 +18,10 @@ const decideUserRole = async (email: string | undefined) => {
   return role;
 };
 
-export const result = NextAuth({
+const result = NextAuth({
   adapter: PrismaAdapter(prisma),
+  debug: true,
+  ...authConfig,
   providers: [
     Google({
       async profile(profile) {
@@ -32,7 +35,7 @@ export const result = NextAuth({
       },
     }),
   ],
-  
+  session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     session({ session, user }) {
@@ -41,8 +44,8 @@ export const result = NextAuth({
     },
   },
 });
-
+const authResult = NextAuth(authConfig);
 export const handlers: NextAuthResult["handlers"] = result.handlers;
-export const auth: NextAuthResult["auth"] = result.auth;
+export const auth: NextAuthResult["auth"] = authResult.auth;
 export const signIn: NextAuthResult["signIn"] = result.signIn;
 export const signOut: NextAuthResult["signOut"] = result.signOut;

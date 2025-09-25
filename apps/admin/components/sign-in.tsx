@@ -1,4 +1,5 @@
 import { signIn } from "../auth"
+import {Button} from "@repo/ui/button"
 export default function SignIn() {
   return (
     <form
@@ -6,8 +7,8 @@ export default function SignIn() {
         "use server"
         await signIn("google")
       }}
-    >
-      <button type="submit">Signin with Google</button>
+    ><button type="submit">Signin with Google</button>
+      <Button appName="admin" className="w-full">Signin with Google</Button>
     </form>
   )
 } 
