@@ -1,4 +1,4 @@
-import "@repo/types";
+import "./global.css";
 export default function RootLayout({
   children,
 }: {

@@ -1,12 +1,12 @@
-import { prisma } from "@repo/database";
-
 export default async function IndexPage() {
-  // const users = await prisma.user.findMany();
-
   return (
-    <div>
-      <h1>Hello World</h1>
-      {/* <pre>{JSON.stringify(users, null, 2)}</pre> */}
-    </div>
+    <main className=" p-4">
+      <div className="bg-amber-700  h-[75vh] w-full rounded-lg flex flex-col items-end justify-end ">
+        <div className=" bg-gray-500 h-1/4 w-1/3 rounded-lg ">
+          Hello, Next.js!
+        </div>
+      </div>
+      <div></div>
+    </main>
   );
 }

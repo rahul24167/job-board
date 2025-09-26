@@ -9,7 +9,6 @@ export default async function IndexPage() {
     <div>
       <h1>Hello World</h1>
       {session?.user ? <><SignOut /><p>Welcome, {session.user.name}</p></> : <SignIn />}
-      
     </div>
   );
 }
